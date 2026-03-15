@@ -212,6 +212,8 @@ The Streamlit app allows users to:
 • Visualize bounding boxes on detected vehicles
 • Display detection confidence scores
 
+### App Streenshort 
+
 ---
 
 ## 📷 Example Output
