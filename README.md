@@ -1,25 +1,114 @@
-# Real-time Vehicle Detections (YOLOv8)
+# 🚗 Real-Time Vehicle Detection using YOLOv8 and Streamlit
 
-This repository implements YOLOv8 training/validation and a Streamlit app for running real-time vehicle detection on images or video files.
+## 📌 Project Overview
 
-## ✅ What’s included
+This project implements a **real-time vehicle detection system** using the YOLOv8 object detection model.
+The trained model detects vehicles from **images and videos** and displays the detection results with **bounding boxes and confidence scores**.
 
-- `train_model.py`: trains YOLOv8n using a dataset from `dataset/`.
-- `dataset.yaml`: dataset config with train/val/test paths and classes.
-- `app.py`: Streamlit UI for image/video upload + YOLOv8 inference.
-- `runs/detect/`: model logs, weights, and predictions.
+The system also includes a **Streamlit web application** that allows users to upload images or videos and run vehicle detection directly in a browser.
 
-## 📌 Setup
+This project demonstrates practical skills in **Computer Vision, Deep Learning, and Model Deployment**.
 
-1. Clone workspace / place repo at `C:\Users\user\Desktop\YOLO-v8 final`.
-2. Install dependencies:
+---
+
+## 🎯 Problem Statement
+
+Traffic monitoring and vehicle detection are important tasks in **smart transportation systems**.
+Manual monitoring is inefficient, so an automated system is required to detect vehicles from images and videos in real time.
+
+This project solves this problem using a **YOLOv8 deep learning model**.
+
+---
+
+## ✨ Features
+
+• Real-time vehicle detection using YOLOv8
+• Detect vehicles from images and videos
+• Bounding box visualization
+• Confidence score display
+• Streamlit web interface for easy usage
+• Custom dataset training support
+• Model inference directly in the browser
+
+---
+
+## 🧠 Tech Stack
+
+**Programming Language**
+
+• Python
+
+**Libraries & Frameworks**
+
+• YOLOv8 (Ultralytics)
+• OpenCV
+• NumPy
+• Streamlit
+
+**Tools**
+
+• VS Code
+• GitHub
+
+---
+
+## 📁 Project Structure
+
+```
+Real-Time-Vehicle-Detection/
+│
+├── app.py
+├── train_model.py
+├── dataset.yaml
+├── README.md
+│
+├── dataset/
+│   ├── train/
+│   │   ├── images/
+│   │   └── labels/
+│   │
+│   ├── val/
+│   │   ├── images/
+│   │   └── labels/
+│   │
+│   └── test/
+│       ├── images/
+│       └── labels/
+│
+└── runs/
+    └── detect/
+        └── train/
+            └── weights/
+                └── best.pt
+```
+
+---
+
+## ⚙️ Installation
+
+Clone the repository or place the project in your workspace.
+
+Example location:
+
+```
+C:\Users\user\Desktop\YOLO-v8-final
+```
+
+Install required dependencies:
 
 ```bash
-pip install ultralytics streamlit opencv-python numpy
+pip install ultralytics
+pip install streamlit
+pip install opencv-python
+pip install numpy
 pip install protobuf --upgrade
 ```
 
-3. Ensure dataset structure is:
+---
+
+## 📂 Dataset Structure
+
+Make sure your dataset follows this structure:
 
 ```
 dataset/
@@ -31,10 +120,15 @@ dataset/
   test/labels/
 ```
 
-4. Prepare `dataset.yaml` (example already provided):
+---
+
+## 📝 Dataset Configuration
+
+Example `dataset.yaml`:
 
 ```yaml
 path: dataset
+
 train: train/images
 val: val/images
 test: test/images
@@ -43,64 +137,111 @@ nc: 1
 names: ['vehicle']
 ```
 
-## ▶️ Training
+If your dataset contains multiple classes, update `nc` and `names` accordingly.
+
+---
+
+## ▶️ Model Training
+
+Run the training script:
 
 ```bash
 python train_model.py
 ```
 
-- Trains `yolov8n.pt` and saves best weights at `runs/detect/train6/weights/best.pt`.
-- If class mismatch occurs, adjust `nc` and `names` in `dataset.yaml` or relabel dataset.
+The model will train using **YOLOv8n** and save the best weights to:
 
-## 🧪 Validation
-
-```bash
-yolo val model=runs/detect/train6/weights/best.pt data=dataset.yaml
+```
+runs/detect/train/weights/best.pt
 ```
 
-If your dataset has more than one label class and model is single-class, create a reduced dataset or retrain with `nc` equal to number of label classes.
+---
 
-## 📺 Prediction on video
+## 🧪 Model Validation
+
+To evaluate the trained model:
 
 ```bash
-yolo detect predict model=runs/detect/train6/weights/best.pt source="C:\\Users\\user\\Downloads\\yolo_dataset\\archive-7\\TestVideo\\TrafficPolice.mp4" conf=0.5
+yolo val model=runs/detect/train/weights/best.pt data=dataset.yaml
 ```
 
-- Output is saved in `runs/detect/predict/TrafficPolice.avi`.
+This will calculate detection metrics such as:
 
-## 🖥️ Streamlit App
+• Precision
+• Recall
+• mAP (Mean Average Precision)
 
+---
+
+## 🎥 Prediction on Video
+
+Run YOLOv8 inference on a video:
+
+```bash
+yolo detect predict model=runs/detect/train/weights/best.pt source="video.mp4" conf=0.5
+```
+
+Output will be saved to:
+
+```
+runs/detect/predict/
+```
+
+---
+
+## 🖥️ Streamlit Web Application
+
+Run the Streamlit interface:
 
 ```bash
 streamlit run app.py
 ```
 
-1. App title: **Real-time vehicle detections**.
-2. Upload image/video file or specify local path.
-3. Press **Run detection**.
-4. Results shown in page; saved to `runs/detect/streamlit/prediction/`.
-
-## 🛠 Notes
-
-- Model path in `app.py` points to `runs/detect/train6/weights/best.pt`.
-- If you retrain with different class count, update `dataset.yaml` and `names` accordingly.
-
-## 📁 Directory snapshot
+After running the command, open the browser:
 
 ```
-README.md
-app.py
-train_model.py
-dataset.yaml
-dataset/
-  train/
-  val/
-  test/
-runs/detect/
+http://localhost:8501
 ```
 
-## 🚀 Next steps
+### App Features
 
-- Change `nc` & `names` for 5 classes 0-4 if dataset uses 5 labels.
-- Add cross-validation, hyperparameter sweeps, and class-specific metrics.
-- Use GPU if available: add `device='0'` argument to `yolo` call.
+The Streamlit app allows users to:
+
+• Upload an image or video
+• Run YOLOv8 vehicle detection
+• Visualize bounding boxes on detected vehicles
+• Display detection confidence scores
+
+---
+
+## 📷 Example Output
+
+The model detects vehicles and highlights them with **bounding boxes and confidence scores**.
+
+Example:
+
+```
+Vehicle detected
+Confidence: 0.92
+```
+
+---
+
+## 📊 Future Improvements
+
+Possible improvements for this project:
+
+• Multi-class vehicle detection
+• Real-time webcam detection
+• Traffic counting system
+• Vehicle type classification (car, truck, bus)
+• Deployment on cloud platforms
+
+---
+
+## 👨‍💻 Author
+
+**Deepak Kumar Singh**
+
+Data Science Learner | Computer Vision Enthusiast
+
