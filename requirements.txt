@@ -1,0 +1,11 @@
+ultralytics
+streamlit
+opencv-python
+numpy
+pandas
+matplotlib
+pillow
+pyyaml
+scipy
+tqdm
+protobuf>=3.20
